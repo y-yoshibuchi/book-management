@@ -18,4 +18,22 @@ class BookAuthorRepository(
             .set(BookAuthors.BOOK_AUTHORS.AUTHOR_ID, authorId)
             .execute()
     }
+
+    fun deleteByBookId(
+        bookId: Long
+    ) {
+        dsl.deleteFrom(BookAuthors.BOOK_AUTHORS)
+            .where(BookAuthors.BOOK_AUTHORS.BOOK_ID.eq(bookId))
+            .execute()
+    }
+
+    fun findAuthorIdsByBookId(
+        bookId: Long
+    ): List<Long> {
+        return dsl.select(BookAuthors.BOOK_AUTHORS.AUTHOR_ID)
+            .from(BookAuthors.BOOK_AUTHORS)
+            .where(BookAuthors.BOOK_AUTHORS.BOOK_ID.eq(bookId))
+            .fetch(BookAuthors.BOOK_AUTHORS.AUTHOR_ID)
+            .mapNotNull { it }
+    }
 }

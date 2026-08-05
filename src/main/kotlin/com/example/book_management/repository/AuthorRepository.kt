@@ -40,4 +40,12 @@ class AuthorRepository(
             .where(Authors.AUTHORS.ID.eq(id))
             .fetchOne()
     }
+
+    fun findByIds(
+        ids: List<Long>
+    ): List<AuthorsRecord> {
+        return dsl.selectFrom(Authors.AUTHORS)
+            .where(Authors.AUTHORS.ID.`in`(ids))
+            .fetch()
+    }
 }
