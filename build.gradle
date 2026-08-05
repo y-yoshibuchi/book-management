@@ -42,6 +42,14 @@ kotlin {
 	}
 }
 
+sourceSets {
+    main {
+        kotlin {
+            srcDir 'src/main/generated'
+        }
+    }
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
@@ -72,3 +80,4 @@ jooq {
         }
     }
 }
+
