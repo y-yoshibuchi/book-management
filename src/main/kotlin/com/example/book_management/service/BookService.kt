@@ -21,8 +21,9 @@ class BookService(
 
     @Transactional
     fun create(request: BookCreateRequest): Long {
-        validateAuthors(request.authorIds)
+        validateTitle(request.title)
         validatePrice(request.price)
+        validateAuthors(request.authorIds)
 
         val bookId = bookRepository.create(
             request.title,
@@ -45,8 +46,9 @@ class BookService(
         id: Long,
         request: BookUpdateRequest
     ) {
-        validateAuthors(request.authorIds)
+        validateTitle(request.title)
         validatePrice(request.price)
+        validateAuthors(request.authorIds)
 
         val currentBook = bookRepository.findById(id)
             ?: throw IllegalArgumentException(
@@ -85,6 +87,16 @@ class BookService(
         if (authorIds.isEmpty()) {
             throw IllegalArgumentException(
                 "書籍には最低1人の著者が必要です"
+            )
+        }
+    }
+
+    private fun validateTitle(
+        title: String
+    ) {
+        if (title.isBlank()) {
+            throw IllegalArgumentException(
+                "書籍タイトルは必須です"
             )
         }
     }
