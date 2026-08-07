@@ -24,6 +24,7 @@ class BookService(
         validateTitle(request.title)
         validatePrice(request.price)
         validateAuthors(request.authorIds)
+        validateAuthorExists(request.authorIds)
 
         val bookId = bookRepository.create(
             request.title,
@@ -49,6 +50,7 @@ class BookService(
         validateTitle(request.title)
         validatePrice(request.price)
         validateAuthors(request.authorIds)
+        validateAuthorExists(request.authorIds)
 
         val currentBook = bookRepository.findById(id)
             ?: throw IllegalArgumentException(
@@ -107,6 +109,18 @@ class BookService(
         if (price < 0) {
             throw IllegalArgumentException(
                 "価格は0以上である必要があります"
+            )
+        }
+    }
+
+    private fun validateAuthorExists(
+        authorIds: List<Long>
+    ) {
+        val authors = authorRepository.findByIds(authorIds)
+
+        if (authors.size != authorIds.size) {
+            throw IllegalArgumentException(
+                "存在しない著者が含まれています"
             )
         }
     }
